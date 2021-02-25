@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import Login from "./components/Login/Login";
-import { getLoginToken } from "./spotify";
+import Player from "./components/Player/Player";
 import SpotifyWebApi from "spotify-web-api-js";
+import { getLoginToken } from "./spotify";
 import { removeHashFromUrl } from "./utils";
 import { useContextProviderValue } from "./context/ContextProvider";
-import Player from "./components/Player/Player";
+import { useEffect } from "react";
 
 const spotify = new SpotifyWebApi();
 
@@ -22,14 +22,19 @@ function App() {
 
       (async () => {
         const user = await spotify.getMe();
-        console.log(user);
         dispatch({ type: "SET_USER", user });
       })();
 
       (async () => {
         const playlists = await spotify.getUserPlaylists();
-        console.log(playlists);
         dispatch({ type: "SET_PLAYLISTS", playlists });
+      })();
+
+      (async () => {
+        const discover_weekly = await spotify.getPlaylist(
+          "37i9dQZEVXcNOEcOnHh3sO"
+        );
+        dispatch({ type: "SET_DISCOVER_WEEKLY", discover_weekly });
       })();
     }
   }, [dispatch]);
