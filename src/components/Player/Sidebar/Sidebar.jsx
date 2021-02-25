@@ -1,8 +1,9 @@
 import "./Sidebar.css";
-import SidebarOption from "./SidebarOption/SidebarOption";
+
 import HomeIcon from "@material-ui/icons/Home";
-import SearchIcon from "@material-ui/icons/Search";
 import LibraryMusicIcon from "@material-ui/icons/LibraryMusic";
+import SearchIcon from "@material-ui/icons/Search";
+import SidebarOption from "./SidebarOption/SidebarOption";
 import { useContextProviderValue } from "./../../../context/ContextProvider";
 
 const Sidebar = () => {
@@ -24,7 +25,7 @@ const Sidebar = () => {
       <hr />
 
       {playlists?.items?.map((playlist) => (
-        <SidebarOption title={playlist.name} />
+        <SidebarOption title={playlist.name} key={playlist.id} />
       ))}
     </div>
   );
