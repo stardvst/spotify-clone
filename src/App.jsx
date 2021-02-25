@@ -4,11 +4,12 @@ import { getLoginToken } from "./spotify";
 import SpotifyWebApi from "spotify-web-api-js";
 import { removeHashFromUrl } from "./utils";
 import { useContextProviderValue } from "./context/ContextProvider";
+import Player from "./components/Player/Player";
 
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [{ user, token }, dispatch] = useContextProviderValue();
+  const [{ token }, dispatch] = useContextProviderValue();
 
   useEffect(() => {
     const tokens = getLoginToken();
@@ -24,12 +25,18 @@ function App() {
         console.log(user);
         dispatch({ type: "SET_USER", user });
       })();
+
+      (async () => {
+        const playlists = await spotify.getUserPlaylists();
+        console.log(playlists);
+        dispatch({ type: "SET_PLAYLISTS", playlists });
+      })();
     }
   }, [dispatch]);
 
   return (
     // BEM
-    <div className="app">{token ? <h1>I am logged in</h1> : <Login />}</div>
+    <div className="app">{token ? <Player /> : <Login />}</div>
   );
 }
 
